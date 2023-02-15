@@ -23,7 +23,7 @@ public class IntSorts {
     }
 
     // Просеивание кучи
-    private void heapify(int array[], int length, int i) {
+    private void heapify(int[] array, int length, int i) {
         int root = i;
         int left = 2 * i + 1;
         int right = 2 * i + 2;
@@ -79,6 +79,42 @@ public class IntSorts {
         }
     }
 
+    // Сортировка слиянием
+    public int[] mergeSort(int[] array) {
+        if (array == null) return null;
+        if (array.length < 2) return array;
+        int halfIndex = array.length / 2;
+        int[] arrayFirst = new int[halfIndex];
+        System.arraycopy(array, 0, arrayFirst, 0, halfIndex);
+        int[] arraySecond = new int[array.length - halfIndex];
+        System.arraycopy(array, halfIndex, arraySecond, 0, array.length - halfIndex);
+        arrayFirst = mergeSort(arrayFirst);
+        arraySecond = mergeSort(arraySecond);
+        return mergeArrays(arrayFirst, arraySecond);
+    }
+
+    private int[] mergeArrays(int[] arrayFirst, int[] arraySecond) {
+        int indexFirst = 0;
+        int indexSecond = 0;
+        int[] result = new int[arrayFirst.length + arraySecond.length];
+        for (int i = 0; i < result.length; i++) {
+            if (indexFirst == arrayFirst.length) {
+                result[i] = arraySecond[indexSecond];
+                indexSecond++;
+            } else if (indexSecond == arraySecond.length) {
+                result[i] = arrayFirst[indexFirst];
+                indexFirst++;
+            } else if (arrayFirst[indexFirst] < arraySecond[indexSecond]) {
+                result[i] = arrayFirst[indexFirst];
+                indexFirst++;
+            } else {
+                result[i] = arraySecond[indexSecond];
+                indexSecond++;
+            }
+        }
+        return result;
+    }
+
     // Сортировка пузырьком
     public void bubbleSort(int[] array) {
         if (array == null) return;
@@ -99,4 +135,5 @@ public class IntSorts {
             i++;
         }
     }
+
 }
